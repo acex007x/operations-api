@@ -1,16 +1,29 @@
 const express = require('express')
-require('./db/mongoose')
+const mongoose = require('mongoose')
+const app = express()
+
+
 
 const userRouter = require('./routes/userRoutes')
-const operationRouter = require('./routes/operationsRoutes')
+const operationsRouter = require('./routes/operationsRoutes')
 
-const app = express()
-const port = process.env.PORT || 3002
+
+
 
 app.use(express.json())
 app.use(userRouter)
-app.use(operationRouter)
+app.use(operationsRouter)
 
-app.listen(port, () => {
-    console.log('server is connected' + port)
-})
+
+
+
+mongoose
+    .connect(
+        'mongodb+srv://sachinpandey_01:sachinpandey_01@cluster0-8xehm.mongodb.net/operations?retryWrites=true'
+    )
+    .then(() => {
+        app.listen(3002)
+        console.log('connected to mongoDBAtlas and listening to PORT 3002 ')
+    }).catch(err => {
+        console.log('unable to connect to mongodbAtlas', err)
+    })
