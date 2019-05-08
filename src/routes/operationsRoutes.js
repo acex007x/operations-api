@@ -2,7 +2,7 @@ const express = require('express')
 const Operation = require('../models/operationsModel')
 const router = new express.Router()
 
-router.post('/operations', async (req, res) => {
+router.post('/', async (req, res) => {
     const operation = new Operation(req.body)
 
     try {
@@ -13,7 +13,7 @@ router.post('/operations', async (req, res) => {
     }
 })
 
-router.get('/operations', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const operations = await Operation.find({})
         res.send(operations)
@@ -22,7 +22,7 @@ router.get('/operations', async (req, res) => {
     }
 })
 
-router.get('/operations/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
     const _id = req.params.id
 
     try {
@@ -38,7 +38,7 @@ router.get('/operations/:id', async (req, res) => {
     }
 })
 
-router.patch('/operations/:id', async (req, res) => {
+router.patch('/:id', async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['description', 'completed']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
@@ -60,7 +60,7 @@ router.patch('/operations/:id', async (req, res) => {
     }
 })
 
-router.delete('/operations/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const operation = await Operation.findByIdAndDelete(req.params.id)
 

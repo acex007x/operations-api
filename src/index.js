@@ -11,8 +11,8 @@ const operationsRouter = require('./routes/operationsRoutes')
 
 
 app.use(express.json())
-app.use(userRouter)
-app.use(operationsRouter)
+app.use('/users', userRouter)
+app.use('/operations', operationsRouter)
 
 
 
