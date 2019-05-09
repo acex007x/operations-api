@@ -1,8 +1,10 @@
 const mongoose = require('mongoose')
+const { Schema } = mongoose
+const bcrypt = require('bcryptjs')
 
 const validator = require('validator')
 
-const User = mongoose.model('User', {
+const userSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -10,6 +12,7 @@ const User = mongoose.model('User', {
     },
     email: {
         type: String,
+        unique: [true, 'email already exists'],
         required: true,
         trim: true,
         lowercase: true,
@@ -40,9 +43,30 @@ const User = mongoose.model('User', {
             }
         }
     }
-
-
-
 })
 
+userSchema.statics.findByCredentials = async (email, password) => {
+    const user = await User.findOne({
+        email
+    })
+    if (!user) {
+        throw new Error('Would you like to register')
+    }
+    const isMatch = await bcrypt.compare(password, user.password)
+    if (!isMatch) {
+        throw new Error('wrong credentials')
+    }
+    return user
+}
+
+
+userSchema.pre('save', async function (next) {
+    const user = this
+    if (user.isModified('password')) {
+        user.password = await bcrypt.hash('user.password', 10)
+    }
+    next()
+})
+
+const User = mongoose.model('User', userSchema)
 module.exports = User

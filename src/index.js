@@ -1,7 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const app = express()
-
+//const { MONGO_USER, MONGO_PASSWORD } = require('./config/config')
 
 
 const userRouter = require('./routes/userRoutes')

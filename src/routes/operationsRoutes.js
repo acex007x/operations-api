@@ -48,7 +48,11 @@ router.patch('/:id', async (req, res) => {
     }
 
     try {
-        const operation = await Operation.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+        const operation = await Operation.findByIdAndUpdate(req.params.id)
+        // req.body, { new: true, runValidators: true })
+        updates.map((update) => operation[update] = req.body[update])
+
+        await operation.save()
 
         if (!operation) {
             return res.status(404).send()
