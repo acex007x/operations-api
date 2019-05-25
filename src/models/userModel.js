@@ -50,7 +50,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
         email
     })
     if (!user) {
-        throw new Error('Would you like to register')
+        throw new Error('Account doesnot exist')
     }
     const isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) {
